@@ -1,10 +1,14 @@
 package stockanalyzer.ctrl;
 
+import downloader.ParallelDownloader;
+import downloader.SequentialDownloader;
 import stockanalyzer.exception.YException;
 
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import yahoofinance.Stock;
@@ -16,6 +20,25 @@ public class Controller {
 
 	Stock stock = null;
 	Calendar from = null;
+	SequentialDownloader sequentialDownloader = null;
+	ParallelDownloader parallelDownloader = null;
+
+	/*** seqDownloadTickers
+	 * @throws YException
+	 */
+	public int seqDownloadTickers(List<String> ticker) throws YException {
+		sequentialDownloader = new SequentialDownloader();
+		return sequentialDownloader.process(ticker);
+	}
+
+	/*** parallelDownloadTickers
+	 * @throws YException
+	 */
+	public int parallelDownloadTickers(List<String> ticker) throws YException {
+		parallelDownloader = new ParallelDownloader();
+		return parallelDownloader.process(ticker);
+	}
+
 	/*** process
 	 * @param ticker
 	 */
